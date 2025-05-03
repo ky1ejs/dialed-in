@@ -1,0 +1,17 @@
+
+fragment CoffeeFragment on Coffee {
+  name
+}
+
+query Test {
+  coffees {
+    ...CoffeeFragment
+  }
+}
+
+query LastUsedCoffee {
+  lastUsedCoffee {
+    ...CoffeeFragment
+  }
+}
+

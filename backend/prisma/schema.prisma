@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  username  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum BurrType {
+  CONICAL
+  FLAT
+}
+
+model Grinder {
+  id                 String     @id @default(uuid())
+  name               String
+  brand              String
+  supportedBurrTypes BurrType[]
+  Brew               Brew[]
+}
+
+model Roaster {
+  id       String   @id @default(uuid())
+  name     String
+  location String
+  coffees  Coffee[]
+}
+
+model Coffee {
+  id        String   @id @default(uuid())
+  name      String
+  brand     String
+  roast     String
+  roastDate DateTime
+  notes     String[]
+  roaster   Roaster  @relation(fields: [roasterId], references: [id])
+  roasterId String
+  Brew      Brew[]
+}
+
+model Brew {
+  id         String   @id @default(uuid())
+  coffee     Coffee   @relation(fields: [coffeeId], references: [id])
+  coffeeId   String
+  doseGrams  Float
+  brewTime   Int
+  waterTemp  Float
+  yieldGrams Float
+  grinder    Grinder  @relation(fields: [grinderId], references: [id])
+  grinderId  String
+  grindSize  Int
+  grindRpm   Int
+  machine    Machine  @relation(fields: [machineId], references: [id])
+  machineId  String
+  brewNotes  String
+  brewDate   DateTime
+}
+
+model Machine {
+  id    String @id @default(uuid())
+  name  String
+  brand String
+  type  String
+  Brew  Brew[]
+}

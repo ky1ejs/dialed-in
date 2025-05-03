@@ -1,0 +1,51 @@
+
+type Query {
+  coffees(filter: CoffeeFilter): [Coffee!]!
+  lastUsedCoffee: Coffee
+  brews(filter: BrewFilter): [Brew!]!
+}
+
+input CoffeeFilter {
+  roasterId: String
+  roastDate: String
+  userId: String
+}
+
+input BrewFilter {
+  coffeeId: String
+  brewDate: String
+  userId: String
+}
+
+type Coffee {
+  id: String!
+  name: String!
+  roaster: String
+  roastDate: String
+  userId: String
+}
+
+type Brew {
+  id: String!
+  coffee: Coffee!
+  brewDate: String!
+  brewNotes: String!
+}
+
+type Mutation {
+  registerAccount(email: String!, username: String!): User!
+  # createCoffee(coffee: CoffeeInput!): Coffee!
+  # updateCoffee(id: String!, coffee: CoffeeInput!): Coffee!
+  # deleteCoffee(id: String!): Coffee!
+  # createBrew(brew: BrewInput!): Brew!
+  # updateBrew(id: String!, brew: BrewInput!): Brew!
+  # deleteBrew(id: String!): Brew!
+} 
+
+type User {
+  id: String!
+  email: String!
+  username: String!
+  createdAt: String!
+  updatedAt: String!
+}
