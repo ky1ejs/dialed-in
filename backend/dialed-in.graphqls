@@ -1,8 +1,9 @@
-
 type Query {
   coffees(filter: CoffeeFilter): [Coffee!]!
   lastUsedCoffee: Coffee
   brews(filter: BrewFilter): [Brew!]!
+  me: User!
+  isUsernameAvailable(username: String!): Boolean!
 }
 
 input CoffeeFilter {
@@ -32,8 +33,52 @@ type Brew {
   brewNotes: String!
 }
 
+input CompleteAccountInput {
+  name: String!
+  username: String!
+  bio: String
+
+  # Auth
+  authId: String!
+  deviceName: String!
+  code: String!
+}
+
+type AuthResponse {
+  user: User!
+  device: Device!
+}
+
+
+input PushTokenInput {
+  token: String!
+  platform: PushPlatform!
+  env: TokenEnv!
+}
+
+enum PushPlatform {
+  IOS
+  ANDROID
+  WEB
+}
+
+enum TokenEnv {
+  STAGING
+  PRODUCTION
+}
+
+type EmptyResponse {
+  success: Boolean!
+}
+
+union AuthenticationResult = AuthResponse | EmptyResponse
+
 type Mutation {
-  registerAccount(email: String!, username: String!): User!
+  initiateAuth(email: String!): String!
+  validateAuth(authId: String!, deviceName: String!, code: String!): AuthenticationResult!
+  completeAccount(input: CompleteAccountInput!): AuthResponse!
+  setPushToken(token: PushTokenInput!): Boolean!
+  logout: Boolean!
   # createCoffee(coffee: CoffeeInput!): Coffee!
   # updateCoffee(id: String!, coffee: CoffeeInput!): Coffee!
   # deleteCoffee(id: String!): Coffee!
@@ -43,9 +88,13 @@ type Mutation {
 } 
 
 type User {
-  id: String!
   email: String!
+  name: String!
   username: String!
-  createdAt: String!
-  updatedAt: String!
+  bio: String
+}
+
+type Device {
+  name: String!
+  sessionId: String!
 }

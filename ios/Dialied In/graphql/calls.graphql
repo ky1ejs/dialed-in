@@ -15,3 +15,67 @@ query LastUsedCoffee {
   }
 }
 
+mutation SetPushToken($token: PushTokenInput!) {
+  setPushToken(token: $token)
+}
+
+fragment DeviceFragment on Device {
+  name
+  sessionId
+}
+
+fragment UserFragment on User {
+  username
+  name
+  email
+  bio
+}
+
+
+query Me @apollo_client_ios_localCacheMutation {
+  me {
+    ...UserFragment
+  }
+}
+
+mutation LogOut {
+  logout
+}
+
+query CheckUsernameAvailability($username: String!) {
+  isUsernameAvailable(username: $username)
+}
+
+mutation ValidateAuth($authId: String!, $deviceName: String!, $code: String!) {
+  validateAuth(authId: $authId, deviceName: $deviceName, code: $code) {
+    ... on EmptyResponse {
+      success
+    }
+
+    ... on AuthResponse {
+      device {
+        ...DeviceFragment
+      }
+      user {
+         ...UserFragment
+      }
+    }
+  }
+}
+
+mutation InitiateAuth($email: String!) {
+  initiateAuth(email: $email)
+}
+
+
+mutation CompleteAccount($input: CompleteAccountInput!) {
+  completeAccount(input: $input) {
+    device {
+      ...DeviceFragment
+    }
+    user {
+       ...UserFragment
+    }
+  }
+}
+

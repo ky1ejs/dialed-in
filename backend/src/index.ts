@@ -5,7 +5,7 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { resolvers } from './resolvers';
+import { resolvers } from './resolvers/resolvers';
 import { context } from './context';
 
 dotenv.config();
