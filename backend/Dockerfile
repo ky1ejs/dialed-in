@@ -31,7 +31,7 @@ ENV NODE_ENV production
 WORKDIR /app
 COPY package*.json .
 COPY prisma ./prisma
-COPY graphql ./graphql
+COPY dialed-in.graphqls ./dialed-in.graphqls
 RUN npm install -g pnpm && pnpm install --prod
 
 ###########################################
@@ -43,7 +43,7 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 COPY --from=deps /app/package*.json ./
 COPY --from=deps /app/prisma ./prisma
-COPY --from=deps /app/graphql ./graphql
+COPY --from=deps /app/dialed-in.graphqls ./dialed-in.graphqls
 COPY --from=deps /app/node_modules ./node_modules
 RUN npm install -g pnpm
 
