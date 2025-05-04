@@ -38,7 +38,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         #else
         let env = TokenEnv.production
         #endif
-        Network.shared.apollo.perform(mutation: SetPushTokenMutation(token: PushTokenInput(
+        Network.shared.client.perform(mutation: SetPushTokenMutation(token: PushTokenInput(
             token: token,
             platform: .case(.ios),
             env: .case(env)

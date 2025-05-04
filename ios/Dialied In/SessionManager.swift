@@ -19,7 +19,7 @@ public class SessionManager: ObservableObject {
 
     private static let SESSION_ID_KEY = "session"
     private let keychain: Keychain
-    private let client = Network.shared.apollo
+    private let client = Network.shared.client
 
     init() throws {
         let keychain = Keychain(
@@ -48,7 +48,7 @@ public class SessionManager: ObservableObject {
         try self.storeSessionId(sessionId)
         self.sessionId = sessionId
 
-        Network.shared.apollo.store.withinReadWriteTransaction { txn in
+        Network.shared.client.store.withinReadWriteTransaction { txn in
             try txn.update(MeLocalCacheMutation()) { set in
                 set.me.email = user.email
                 set.me.name = user.name
@@ -68,12 +68,12 @@ public class SessionManager: ObservableObject {
 
     private func logOut(remotely: Bool) throws {
         if remotely {
-            Network.shared.apollo.perform(mutation: LogOutMutation())
+            Network.shared.client.perform(mutation: LogOutMutation())
         }
         sessionId = nil
         isOnboarding = true
         try keychain.removeAll()
-        Network.shared.apollo.store.clearCache()
+        Network.shared.client.store.clearCache()
     }
 
     func logOut() throws {

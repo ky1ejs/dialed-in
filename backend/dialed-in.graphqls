@@ -1,5 +1,5 @@
 type Query {
-  coffees(filter: CoffeeFilter): [Coffee!]!
+  coffeeBags: [Coffee!]!
   lastUsedCoffee: Coffee
   brews(filter: BrewFilter): [Brew!]!
   me: User!
@@ -18,12 +18,19 @@ input BrewFilter {
   userId: String
 }
 
+enum WeightUnit {
+  GRAMS
+  OUNCES
+}
+
 type Coffee {
   id: String!
   name: String!
-  roaster: String
+  roasterName: String!
   roastDate: String
   userId: String
+  weight: Int
+  weightUnit: WeightUnit
 }
 
 type Brew {
@@ -73,13 +80,37 @@ type EmptyResponse {
 
 union AuthenticationResult = AuthResponse | EmptyResponse
 
+enum Roast {
+  LIGHT
+  LIGHT_MEDIUM
+  MEDIUM
+  MEDIUM_DARK
+  DARK
+  STARBUCKS_CHARCOAL
+}
+
+input WeightInput {
+  value: Int!
+  unit: WeightUnit!
+}
+
+input CoffeeInput {
+  name: String!
+  roasterName: String!
+  roast: Roast!
+  roastDate: String
+  weight: WeightInput
+  notes: [String!]
+}
+
 type Mutation {
   initiateAuth(email: String!): String!
   validateAuth(authId: String!, deviceName: String!, code: String!): AuthenticationResult!
   completeAccount(input: CompleteAccountInput!): AuthResponse!
   setPushToken(token: PushTokenInput!): Boolean!
   logout: Boolean!
-  # createCoffee(coffee: CoffeeInput!): Coffee!
+
+  createCoffee(coffee: CoffeeInput!): Coffee!
   # updateCoffee(id: String!, coffee: CoffeeInput!): Coffee!
   # deleteCoffee(id: String!): Coffee!
   # createBrew(brew: BrewInput!): Brew!

@@ -5,6 +5,12 @@ CREATE EXTENSION IF NOT EXISTS "citext";
 CREATE TYPE "BurrType" AS ENUM ('CONICAL', 'FLAT');
 
 -- CreateEnum
+CREATE TYPE "Roast" AS ENUM ('LIGHT', 'LIGHT_MEDIUM', 'MEDIUM', 'MEDIUM_DARK', 'DARK', 'STARBUCKS_CHARCOAL');
+
+-- CreateEnum
+CREATE TYPE "WeightUnit" AS ENUM ('GRAMS', 'OUNCES');
+
+-- CreateEnum
 CREATE TYPE "TokenEnv" AS ENUM ('STAGING', 'PRODUCTION');
 
 -- CreateEnum
@@ -47,8 +53,8 @@ CREATE TABLE "Grinder" (
 -- CreateTable
 CREATE TABLE "Roaster" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "name" TEXT NOT NULL,
-    "location" TEXT NOT NULL,
+    "name" CITEXT NOT NULL,
+    "location" TEXT,
 
     CONSTRAINT "Roaster_pkey" PRIMARY KEY ("id")
 );
@@ -57,13 +63,23 @@ CREATE TABLE "Roaster" (
 CREATE TABLE "Coffee" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT NOT NULL,
-    "brand" TEXT NOT NULL,
-    "roast" TEXT NOT NULL,
-    "roastDate" TIMESTAMP(3) NOT NULL,
+    "roast" "Roast" NOT NULL,
     "notes" TEXT[],
     "roasterId" UUID NOT NULL,
 
     CONSTRAINT "Coffee_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CoffeeBag" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "weight" INTEGER,
+    "weightUnit" "WeightUnit" NOT NULL DEFAULT 'GRAMS',
+    "roastDate" DATE,
+    "userId" UUID NOT NULL,
+    "coffeeId" UUID NOT NULL,
+
+    CONSTRAINT "CoffeeBag_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -127,6 +143,9 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 CREATE UNIQUE INDEX "EmailAutheticationRequest_email_key" ON "EmailAutheticationRequest"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Roaster_name_key" ON "Roaster"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Device_sessionId_key" ON "Device"("sessionId");
 
 -- CreateIndex
@@ -134,6 +153,12 @@ CREATE UNIQUE INDEX "PushToken_device_id_key" ON "PushToken"("device_id");
 
 -- AddForeignKey
 ALTER TABLE "Coffee" ADD CONSTRAINT "Coffee_roasterId_fkey" FOREIGN KEY ("roasterId") REFERENCES "Roaster"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CoffeeBag" ADD CONSTRAINT "CoffeeBag_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CoffeeBag" ADD CONSTRAINT "CoffeeBag_coffeeId_fkey" FOREIGN KEY ("coffeeId") REFERENCES "Coffee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Brew" ADD CONSTRAINT "Brew_coffeeId_fkey" FOREIGN KEY ("coffeeId") REFERENCES "Coffee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -150,7 +175,7 @@ ALTER TABLE "Device" ADD CONSTRAINT "Device_userId_fkey" FOREIGN KEY ("userId") 
 -- AddForeignKey
 ALTER TABLE "PushToken" ADD CONSTRAINT "PushToken_device_id_fkey" FOREIGN KEY ("device_id") REFERENCES "Device"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- Create function to automatically update updatedAt timestamp
+-- Create updated_at trigger function
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -159,13 +184,13 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
--- Create triggers for tables with updatedAt
+-- Add triggers for tables with updatedAt
 CREATE TRIGGER update_user_updated_at
     BEFORE UPDATE ON "User"
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_device_updated_at 
+CREATE TRIGGER update_device_updated_at
     BEFORE UPDATE ON "Device"
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();

@@ -1,10 +1,14 @@
-
 fragment CoffeeFragment on Coffee {
+  id
   name
+  roastDate
+  roasterName
+  weight
+  weightUnit
 }
 
-query Test {
-  coffees {
+query ListCoffeeBags {
+  coffeeBags {
     ...CoffeeFragment
   }
 }

@@ -8,3 +8,4 @@
 import DialedInGraphQLAPI
 
 typealias User = UserFragment
+typealias Coffee = CoffeeFragment

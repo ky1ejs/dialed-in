@@ -38,7 +38,7 @@ class CompleteAccountFormViewModel: ObservableObject {
             self.usernameState = .error
             return
         }
-        self.usernameCheck = Network.shared.apollo.fetch(query: CheckUsernameAvailabilityQuery(username: username), resultHandler: { result in
+        self.usernameCheck = Network.shared.client.fetch(query: CheckUsernameAvailabilityQuery(username: username), resultHandler: { result in
             guard let isAvailable = try? result.get().data?.isUsernameAvailable else {
                 self.usernameState = .error
                 return
@@ -168,7 +168,7 @@ struct CompleteAccountForm: View {
             deviceName: UIDevice.current.name,
             code: code
         )
-        inFlightRequest = Network.shared.apollo.perform(mutation: CompleteAccountMutation(input: input)) { result in
+        inFlightRequest = Network.shared.client.perform(mutation: CompleteAccountMutation(input: input)) { result in
             switch result.parseGraphQL() {
             case .success(let data):
                 let user = data.completeAccount.user.fragments.userFragment

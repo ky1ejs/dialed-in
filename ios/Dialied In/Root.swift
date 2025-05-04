@@ -11,7 +11,7 @@ struct Root: View {
 
     var body: some View {
         TabView {
-            ContentView()
+            BrewView()
         }
         .environment(\.theme, Theme.for(colorScheme))
     }

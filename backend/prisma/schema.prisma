@@ -13,15 +13,16 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email       String   @unique
-  username    String   @unique
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email       String      @unique
+  username    String      @unique
   name        String
   bio         String?
   hashedEmail String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now()) @updatedAt
   devices     Device[]
+  bags        CoffeeBag[]
 }
 
 model EmailAutheticationRequest {
@@ -46,21 +47,45 @@ model Grinder {
 
 model Roaster {
   id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name     String
-  location String
+  name     String   @unique @db.Citext
+  location String?
   coffees  Coffee[]
 }
 
+enum Roast {
+  LIGHT
+  LIGHT_MEDIUM
+  MEDIUM
+  MEDIUM_DARK
+  DARK
+  STARBUCKS_CHARCOAL
+}
+
 model Coffee {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
-  brand     String
-  roast     String
-  roastDate DateTime
+  roast     Roast
   notes     String[]
-  roaster   Roaster  @relation(fields: [roasterId], references: [id])
-  roasterId String   @db.Uuid
+  roaster   Roaster     @relation(fields: [roasterId], references: [id])
+  roasterId String      @db.Uuid
   Brew      Brew[]
+  bag       CoffeeBag[]
+}
+
+enum WeightUnit {
+  GRAMS
+  OUNCES
+}
+
+model CoffeeBag {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  weight     Int?
+  weightUnit WeightUnit @default(GRAMS)
+  roastDate  DateTime?  @db.Date
+  userId     String     @db.Uuid
+  user       User       @relation(fields: [userId], references: [id])
+  coffee     Coffee     @relation(fields: [coffeeId], references: [id])
+  coffeeId   String     @db.Uuid
 }
 
 model Brew {

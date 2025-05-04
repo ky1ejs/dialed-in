@@ -46,7 +46,7 @@ struct CheckEmailVerification: View {
                 authenticate()
             }
             PrimaryButton("Resend\(timeRemaining > 0 ? " (in \(timeRemaining) seconds)" : "")", isLoading: inFlightRequest != nil) {
-                inFlightRequest = Network.shared.apollo.perform(mutation: InitiateAuthMutation(email: email)) { result in
+                inFlightRequest = Network.shared.client.perform(mutation: InitiateAuthMutation(email: email)) { result in
                     switch result.parseGraphQL() {
                     case .success(let data):
                         attemptId = data.initiateAuth
@@ -84,7 +84,7 @@ struct CheckEmailVerification: View {
         guard inFlightRequest == nil else { return }
         let deviceName = UIDevice.current.name
         let mutation = ValidateAuthMutation(authId: attemptId, deviceName: deviceName, code: code)
-        inFlightRequest = Network.shared.apollo.perform(mutation: mutation) { result in
+        inFlightRequest = Network.shared.client.perform(mutation: mutation) { result in
             switch result.parseGraphQL() {
             case .success(let data):
                 let r = data.validateAuth

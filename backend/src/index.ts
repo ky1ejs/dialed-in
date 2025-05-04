@@ -6,7 +6,8 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { resolvers } from './resolvers/resolvers';
-import { context } from './context';
+import prisma from 'src/prisma';
+import { UserContext } from 'src/context';
 
 dotenv.config();
 
@@ -28,7 +29,20 @@ async function startServer() {
   await server.start();
 
   app.use('/graphql', expressMiddleware(server, {
-    context: async () => context
+    context: async ({ req }) => {
+      const token = req.headers.authorization;
+      let user: UserContext | null = null;
+      if (token) {
+        try {
+          const device = await prisma.device.findUnique({ where: { sessionId: token }, include: { user: true } })
+          if (device) {
+            user = { ...device.user, device: device }
+          }
+        } catch {
+        }
+      }
+      return { prisma, user };
+    }
   }));
 
   app.listen(port, () => {

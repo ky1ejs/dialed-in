@@ -61,7 +61,7 @@ struct EmailForm: View {
     }
 
     func authenticate() {
-        request = Network.shared.apollo.perform(mutation: InitiateAuthMutation(email: email)) { result in
+        request = Network.shared.client.perform(mutation: InitiateAuthMutation(email: email)) { result in
             request = nil
             switch result.parseGraphQL() {
             case .success(let data):

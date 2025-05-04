@@ -1,19 +1,19 @@
 import { Resolvers } from '../__generated__/graphql';
 import { Context } from '../context';
-import coffeesResolver from './coffeesResolver';
 import initiateAuthResolver from './auth/initiateAuthResolver';
 import isUsernameAvailableResolver from './auth/isUsernameAvailableResolve';
 import validateAuthResolver from 'src/resolvers/auth/validateAuthResolver';
 import completeAccountResolver from 'src/resolvers/auth/CompleteAccountResolver';
-
+import createCoffeeResolver from 'src/resolvers/mutations/createCoffeeResolver';
+import coffeeBagsResolver from 'src/resolvers/queries/coffeeBagsResolver';
 export const resolvers: Resolvers<Context> = {
   Query: {
-    coffees: coffeesResolver,
+    coffeeBags: coffeeBagsResolver,
     lastUsedCoffee: () => {
       return {
         id: '1',
         name: 'Honey',
-        roaster: 'Devocion'
+        roasterName: 'Devocion'
       };
     },
     isUsernameAvailable: isUsernameAvailableResolver,
@@ -22,5 +22,6 @@ export const resolvers: Resolvers<Context> = {
     initiateAuth: initiateAuthResolver,
     validateAuth: validateAuthResolver,
     completeAccount: completeAccountResolver,
+    createCoffee: createCoffeeResolver,
   },
 }; 

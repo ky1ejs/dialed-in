@@ -17,40 +17,10 @@ struct WelcomeView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 0) {
-                HStack {
-                    ForEach(0..<3, id: \.self) { i in
-                        VStack {
-                            ForEach(0..<3, id: \.self) { v in
-                                Image("content_\((i*3) + (v+1))")
-                                    .resizable()
-                                    .aspectRatio(0.6, contentMode: .fit)
-                                    .mask {
-                                        RoundedRectangle(cornerRadius: 14)
-                                    }.overlay {
-                                        if v == 2 {
-                                            VStack {
-                                                Spacer()
-                                                Image("friend\(i+1)")
-                                                    .frame(width: 70, height: 70)
-                                                    .foregroundColor(.red)
-                                                    .offset(y: 20)
-                                                    .offset(x: offset(i))
-                                            }
-                                        }
-                                    }
-                            }
-                            .offset(y: i == 1 ? -60 : 0)
-                        }
-                        .containerRelativeFrame(.horizontal) { proxy, _ in
-                            proxy / 3 - 20
-                        }
-                    }
-                }
-                .padding(.top, 8)
-                Text("Cut")
+                Text("Dialed In")
                     .font(.cut_largeTitle)
                     .bold()
-                Text("Watchlists and friends recommendations, all in one place.")
+                Text("Find your favorite coffees and recipes")
                     .font(.cut_title1)
                     .bold()
                     .multilineTextAlignment(.center)
@@ -75,7 +45,7 @@ struct WelcomeView: View {
                         } else {
                             Text("Get Started")
                                 .font(.cut_largeTitle)
-                            Text("Create a free account to make watchlists, connect with your friends, and more.")
+                            Text("Create a free account.")
                                 .multilineTextAlignment(.center)
                             VStack {
                                 PrimaryButton("Continue with email") {
