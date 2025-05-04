@@ -7,7 +7,7 @@ COPY package*.json .
 COPY prisma ./prisma
 RUN pnpm install 
 COPY . .
-RUN pnpm codegen:graphql && pnpm run build
+RUN pnpm graphql:codegen && pnpm run build
 
 ###########################################
 # This stage installs production dependencies only.

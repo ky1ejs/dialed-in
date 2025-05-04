@@ -11,8 +11,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:reset": "prisma migrate reset",
-    "codegen": "graphql-codegen",
-    "codegen:watch": "graphql-codegen --watch"
+    "graphql:codegen": "graphql-codegen",
+    "graphql:watch": "graphql-codegen --watch"
   },
   "keywords": [],
   "author": "",
