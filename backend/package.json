@@ -12,7 +12,9 @@
     "prisma:studio": "prisma studio",
     "prisma:reset": "prisma migrate reset",
     "graphql:codegen": "graphql-codegen",
-    "graphql:watch": "graphql-codegen --watch"
+    "graphql:watch": "graphql-codegen --watch",
+    "migrate": "prisma migrate deploy",
+    "migrate:start": "pnpm run migrate && pnpm run start"
   },
   "keywords": [],
   "author": "",

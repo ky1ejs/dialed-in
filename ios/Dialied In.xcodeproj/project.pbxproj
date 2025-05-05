@@ -17,9 +17,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		93D54D512DC5A82700870267 /* Dialied In */ = {
+		93D54D512DC5A82700870267 /* DialiedIn */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Dialied In";
+			path = DialiedIn;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -48,7 +48,7 @@
 		93D54D462DC5A82700870267 = {
 			isa = PBXGroup;
 			children = (
-				93D54D512DC5A82700870267 /* Dialied In */,
+				93D54D512DC5A82700870267 /* DialiedIn */,
 				930CA6122DC5B0EB0077215F /* Frameworks */,
 				93D54D502DC5A82700870267 /* Products */,
 			);
@@ -78,7 +78,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				93D54D512DC5A82700870267 /* Dialied In */,
+				93D54D512DC5A82700870267 /* DialiedIn */,
 			);
 			name = "Dialied In";
 			packageProductDependencies = (
@@ -285,6 +285,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -317,6 +318,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

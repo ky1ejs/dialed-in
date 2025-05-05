@@ -1,10 +1,18 @@
 
+import { GraphQLError } from "graphql";
 import { QueryResolvers } from "../../__generated__/graphql";
 import coffeeMapper from "src/resolvers/mappers/coffeeMapper";
 
 const coffeeBagsResolver: QueryResolvers["coffeeBags"] = async (_, __, { prisma, user }) => {
   if (!user) {
-    throw new Error("User not found");
+    throw new GraphQLError("Unauthorized", {
+      extensions: {
+        code: "UNAUTHORIZED",
+        http: {
+          status: 401
+        }
+      },
+    })
   }
   const coffeeBags = await prisma.coffeeBag.findMany({
     where: {

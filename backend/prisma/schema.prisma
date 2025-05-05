@@ -70,6 +70,7 @@ model Coffee {
   roasterId String      @db.Uuid
   Brew      Brew[]
   bag       CoffeeBag[]
+  upc       String?
 }
 
 enum WeightUnit {
