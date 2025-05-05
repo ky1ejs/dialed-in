@@ -4,6 +4,7 @@ type Query {
   brews(filter: BrewFilter): [Brew!]!
   me: User!
   isUsernameAvailable(username: String!): Boolean!
+  _healthCheck: Boolean!
 }
 
 input CoffeeFilter {

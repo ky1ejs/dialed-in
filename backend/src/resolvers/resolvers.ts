@@ -6,6 +6,7 @@ import validateAuthResolver from 'src/resolvers/auth/validateAuthResolver';
 import completeAccountResolver from 'src/resolvers/auth/CompleteAccountResolver';
 import createCoffeeResolver from 'src/resolvers/mutations/createCoffeeResolver';
 import coffeeBagsResolver from 'src/resolvers/queries/coffeeBagsResolver';
+import prisma from 'src/prisma';
 export const resolvers: Resolvers<Context> = {
   Query: {
     coffeeBags: coffeeBagsResolver,
@@ -17,6 +18,10 @@ export const resolvers: Resolvers<Context> = {
       };
     },
     isUsernameAvailable: isUsernameAvailableResolver,
+    _healthCheck: async () => {
+      const result = await prisma.$executeRaw`SELECT 1`;
+      return result > 0;
+    },
   },
   Mutation: {
     initiateAuth: initiateAuthResolver,
