@@ -29,6 +29,9 @@ importers:
       graphql:
         specifier: ^16.11.0
         version: 16.11.0
+      prisma:
+        specifier: ^6.7.0
+        version: 6.7.0(typescript@5.8.3)
     devDependencies:
       '@graphql-codegen/cli':
         specifier: ^5.0.5
@@ -48,9 +51,6 @@ importers:
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
-      prisma:
-        specifier: ^6.7.0
-        version: 6.7.0(typescript@5.8.3)
       ts-node-dev:
         specifier: ^2.0.0
         version: 2.0.0(@types/node@22.15.3)(typescript@5.8.3)
