@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { sendEmail } from "src/services/emailService"
+import { sendEmail } from "../services/emailService"
 
 
 export async function initiateAuthentication(email: string, prisma: PrismaClient): Promise<string> {
