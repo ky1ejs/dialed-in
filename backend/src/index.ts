@@ -12,6 +12,7 @@ import { UserContext } from './context';
 
 dotenv.config();
 
+// Needed when compiling with tsup. See ../../journeys/0001_tsup.md for more.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
